@@ -14,30 +14,39 @@ import LearnFHE from "./pages/LearnFHE";
 import NotFound from "./pages/NotFound";
 import '@rainbow-me/rainbowkit/styles.css';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      retry: 1,
+    },
+  },
+});
 
-const App = () => (
-  <WagmiProvider config={config}>
-    <RainbowKitProvider>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/races" element={<Races />} />
-              <Route path="/leaderboard" element={<Leaderboard />} />
-              <Route path="/privacy" element={<Privacy />} />
-              <Route path="/learn-fhe" element={<LearnFHE />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </QueryClientProvider>
-    </RainbowKitProvider>
-  </WagmiProvider>
-);
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <WagmiProvider config={config}>
+        <RainbowKitProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/races" element={<Races />} />
+                <Route path="/leaderboard" element={<Leaderboard />} />
+                <Route path="/privacy" element={<Privacy />} />
+                <Route path="/learn-fhe" element={<LearnFHE />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </RainbowKitProvider>
+      </WagmiProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
